@@ -12,9 +12,9 @@ pipeline{
                 buildDiscarder(
                         logRotator(
                                 artifactDaysToKeepStr: "",
-                                artifactNumToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'7',
+                                artifactNumToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'3',
                                 daysToKeepStr: "",
-                                numToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'7')
+                                numToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'3')
                 )
         ])
   
@@ -56,4 +56,4 @@ pipeline{
     }
     }
 }
-               }              
+

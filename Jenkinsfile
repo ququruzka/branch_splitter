@@ -5,18 +5,17 @@ pipeline{
 	  
 	options {
 		timestamps ()
-  }
-    /* properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'7', numToKeepStr: '3'))]) */
-  
-	properties([
-                buildDiscarder(
+		buildDiscarder(
                         logRotator(
                                 artifactDaysToKeepStr: "",
                                 artifactNumToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'3',
                                 daysToKeepStr: "",
                                 numToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'3')
                 )
-        ])
+  }
+    /* properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'7', numToKeepStr: '3'))]) */
+  
+	
   
 	stages{
 		stage('stage_0:get_tokens') {

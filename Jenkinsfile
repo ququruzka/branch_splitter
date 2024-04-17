@@ -2,8 +2,50 @@ pipeline{
 	agent {
 		label 'master'
 	}
-	  
-	options {
+
+
+
+
+
+
+  strategy {
+                  namedBranchesDifferent {
+                    defaultProperties {
+                      buildRetention {
+                        buildDiscarder {
+                          logRotator {
+                            daysToKeepStr('184')
+                            numToKeepStr('9')
+                            artifactDaysToKeepStr('184')
+                            artifactNumToKeepStr('9')
+                          }
+                        }
+                      }
+                    }
+                    namedExceptions {
+
+                      named {
+                        name('devel,develop,development,release')
+                        props {
+                          buildRetention {
+                            buildDiscarder {
+                              logRotator {
+                                daysToKeepStr('10')
+                                numToKeepStr('3')
+                                artifactDaysToKeepStr('10')
+                                artifactNumToKeepStr('3')
+                              }
+                            }
+                          }
+
+                        }
+                      }
+
+                  }
+                }
+}
+
+/*  options {
 		timestamps ()
 		buildDiscarder(
                         logRotator(
@@ -11,8 +53,8 @@ pipeline{
                                 artifactNumToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'3',
                                 daysToKeepStr: "",
                                 numToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'3')
-                )
-  }
+              )
+    } */
     /* properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: "${env.BRANCH_NAME}"=="main"?'5':'7', numToKeepStr: '3'))]) */
   
 	

@@ -32,9 +32,7 @@ pipeline{
 	}
 	post {
         // Clean after build
-        cleanup{
-        deleteDir()
-	}
+
 		always {
 			script {
                 		def branchName = env.BRANCH_NAME
@@ -51,6 +49,11 @@ pipeline{
                         			buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3'))
 					}
 				}
+			}
+		}
+		always {
+			cleanup{
+				deleteDir()
 			}
 		}
 	}

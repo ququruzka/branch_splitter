@@ -10,6 +10,7 @@ pipeline {
     stages {
         stage('stage_0:get_tokens') {
             steps {
+                cleanWs()
                 script {
                     sh'''
                     date > $(date '+%d-%m-%Y_%H-%M-%S').txt

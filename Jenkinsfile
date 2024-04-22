@@ -4,7 +4,8 @@ pipeline {
     }
 
     options {
-        buildDiscarder(logRotator(numToKeepStr: branchName ==~ /^(?!develop$|release)/ ? '3' : '6'))
+        def branchName = "${env.BRANCH_NAME}"
+        buildDiscarder(logRotator(numToKeepStr: branchName ==~ /^(?!develop$|release)/ ? '10' : '100'))
     }
 
     stages {

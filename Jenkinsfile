@@ -2,7 +2,12 @@ pipeline {
     agent {
         label 'master'
     }
-stages {
+    
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3')) // Default options
+    }
+
+    stages {
         stage('stage_0:get_tokens') {
             steps {
                 script {
@@ -26,22 +31,11 @@ stages {
     post {
         always {
             script {
-                sh '''
-                echo date
-                '''
                 def branchName = env.BRANCH_NAME
                 if (branchName == 'develop') {
-                    options {
-                        buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
-                    }
+                    currentBuild.rawBuild.setBuildDiscarder(new LogRotator(15, 15, -1, -1))
                 } else if (branchName ==~ /release/) {
-                    options {
-                        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-                    }
-                } else {
-                    options {
-                        buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3'))
-                    }
+                    currentBuild.rawBuild.setBuildDiscarder(new LogRotator(10, 10, -1, -1))
                 }
             }
             cleanup {

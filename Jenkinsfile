@@ -26,6 +26,9 @@ stages {
     post {
         always {
             script {
+                sh '''
+                echo date
+                '''
                 def branchName = env.BRANCH_NAME
                 if (branchName == 'develop') {
                     options {

@@ -1,8 +1,14 @@
+def branchName = "${env.BRANCH_NAME}"
+
 pipeline {
     agent {
         label 'master'
     }
-    
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: branchName ==~ /^(?!develop$|release)/ ? '3' : '6'))
+    }
+
     stages {
         stage('stage_0:get_tokens') {
             steps {
@@ -26,17 +32,7 @@ pipeline {
 
     post {
         always {
-            script {
-                def branchName = env.BRANCH_NAME
-                if (branchName == 'develop') {
-                    buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
-                } else if (branchName ==~ /.*release.*/) {
-                    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-                } else {
-                    buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3'))
-                }
-                deleteDir()
-            }
+            deleteDir()
         }
     }
 }

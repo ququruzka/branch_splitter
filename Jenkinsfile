@@ -3,12 +3,8 @@ pipeline {
         label 'master'
     }
 
-    environment {
-        NUM_TO_KEEP = branchName ==~ /^(?!develop$|release)/ ? '3' : '6'
-    }
-
     options {
-        buildDiscarder(logRotator(numToKeepStr: NUM_TO_KEEP))
+        buildDiscarder(logRotator(numToKeepStr: branchName ==~ /^(?!develop$|release)/ ? '3' : '6'))
     }
 
     stages {

@@ -33,7 +33,7 @@ pipeline{
 	post {
         // Clean after build
 
-		success {
+		always {
 			script {
                 		def branchName = env.BRANCH_NAME
                 		if (branchName == 'develop') {
@@ -50,8 +50,6 @@ pipeline{
 					}
 				}
 			}
-		}
-		always {
 			cleanup{
 				deleteDir()
 			}

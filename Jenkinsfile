@@ -33,9 +33,9 @@ pipeline {
             script {
                 def branchName = env.BRANCH_NAME
                 if (branchName == 'develop') {
-                    currentBuild.rawBuild.setBuildDiscarder(new LogRotator(15, 15, -1, -1))
+                    currentBuild.rawBuild.buildDiscarder = new hudson.tasks.LogRotator(15, 15, -1, -1)
                 } else if (branchName ==~ /release/) {
-                    currentBuild.rawBuild.setBuildDiscarder(new LogRotator(10, 10, -1, -1))
+                    currentBuild.rawBuild.buildDiscarder = new hudson.tasks.LogRotator(10, 10, -1, -1)
                 }
             }
             cleanup {

@@ -29,17 +29,12 @@ pipeline {
             script {
                 def branchName = env.BRANCH_NAME
                 if (branchName == 'develop') {
-                    currentBuild.rawBuild.getLogRotator().setNumToKeep(15)
-                    currentBuild.rawBuild.getLogRotator().setArtifactNumToKeep(15)
+                    buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
                 } else if (branchName ==~ /.*release.*/) {
-                    currentBuild.rawBuild.getLogRotator().setNumToKeep(10)
-                    currentBuild.rawBuild.getLogRotator().setArtifactNumToKeep(10)
+                    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
                 } else {
-                    currentBuild.rawBuild.getLogRotator().setNumToKeep(3)
-                    currentBuild.rawBuild.getLogRotator().setArtifactNumToKeep(3)
+                    buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3'))
                 }
-            }
-            script {
                 deleteDir()
             }
         }

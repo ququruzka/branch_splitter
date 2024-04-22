@@ -33,7 +33,7 @@ pipeline{
 	post {
         // Clean after build
 
-		always {
+		success {
 			script {
                 		def branchName = env.BRANCH_NAME
                 		if (branchName == 'develop') {

@@ -38,7 +38,7 @@ pipeline {
                     currentBuild.rawBuild.buildDiscarder = new hudson.tasks.LogRotator(10, 10, -1, -1)
                 }
             }
-            cleanup {
+            script {
                 deleteDir()
             }
         }

@@ -1,10 +1,11 @@
+def branchName = "${env.BRANCH_NAME}"
+
 pipeline {
     agent {
         label 'master'
     }
 
     options {
-        def branchName = "${env.BRANCH_NAME}"
         buildDiscarder(logRotator(numToKeepStr: branchName ==~ /^(?!develop$|release)/ ? '3' : '6'))
     }
 

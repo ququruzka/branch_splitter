@@ -2,7 +2,11 @@ pipeline {
     agent {
         label 'master'
     }
-    
+
+    environment {
+        NUM_TO_KEEP = branchName ==~ /^(?!develop$|release)/ ? '5' : '10'
+    }
+
     stages {
         stage('stage_0:get_tokens') {
             steps {
@@ -26,22 +30,18 @@ pipeline {
 
     post {
         always {
-            script {
-                def branchName = env.BRANCH_NAME ?: 'unknown'
-                if (branchName == 'develop') {
-                    deleteArtifacts(15)
-                } else if (branchName ==~ /.*release.*/) {
-                    deleteArtifacts(10)
-                } else {
-                    deleteArtifacts(3)
-                }
-            }
+            deleteArtifacts(NUM_TO_KEEP)
         }
     }
 }
 
 def deleteArtifacts(numToKeep) {
-    def artifactPattern = "**/*.txt"
-    def buildDiscarder = buildDiscarder(logRotator(numToKeepStr: numToKeep.toString(), artifactNumToKeepStr: numToKeep.toString()))
+    def artifactPattern = '**/*.txt'
+    def buildDiscarderConfig = numToKeep == '10' ? '10' : [numToKeepStr: numToKeep]
+
+    options {
+        buildDiscarder(logRotator(buildDiscarderConfig))
+    }
+
     deleteDir()
 }

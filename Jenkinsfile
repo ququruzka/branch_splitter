@@ -6,7 +6,7 @@ pipeline {
     }
 
     options {
-        buildDiscarder(logRotator(numToKeepStr: branchName ==~ /^(?!.*develop|.*release).*/ ? '3' : '6'))
+        buildDiscarder(logRotator(numToKeepStr: (branchName != 'develop' || branchName ==~ /.*release.*/) ? '3' : '6'))
     }
 
     stages {

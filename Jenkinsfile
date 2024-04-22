@@ -27,22 +27,21 @@ pipeline {
     post {
         always {
             script {
-                def branchName = env.BRANCH_NAME
-                echo "Branch name: ${branchName}"
-                
+                def branchName = env.BRANCH_NAME ?: 'unknown'
                 if (branchName == 'develop') {
-                    echo "Branch name matched 'develop'"
-                    buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
+                    deleteArtifacts(15)
                 } else if (branchName ==~ /.*release.*/) {
-                    echo "Branch name matched 'release' regular expression"
-                    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+                    deleteArtifacts(10)
                 } else {
-                    echo "Branch name did not match any condition"
-                    buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3'))
+                    deleteArtifacts(3)
                 }
-                
-                deleteDir()
             }
         }
     }
+}
+
+def deleteArtifacts(numToKeep) {
+    def artifactPattern = "**/*.txt"
+    def buildDiscarder = buildDiscarder(logRotator(numToKeepStr: numToKeep.toString(), artifactNumToKeepStr: numToKeep.toString()))
+    deleteDir()
 }

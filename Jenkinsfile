@@ -4,7 +4,11 @@ pipeline {
     }
 
     environment {
-        NUM_TO_KEEP = branchName ==~ /^(?!develop$|release)/ ? '5' : '10'
+        NUM_TO_KEEP = branchName ==~ /^(?!develop$|release)/ ? '3' : '6'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: NUM_TO_KEEP))
     }
 
     stages {
@@ -30,18 +34,7 @@ pipeline {
 
     post {
         always {
-            deleteArtifacts(NUM_TO_KEEP)
+            deleteDir()
         }
     }
-}
-
-def deleteArtifacts(numToKeep) {
-    def artifactPattern = '**/*.txt'
-    def buildDiscarderConfig = numToKeep == '10' ? '10' : [numToKeepStr: numToKeep]
-
-    options {
-        buildDiscarder(logRotator(buildDiscarderConfig))
-    }
-
-    deleteDir()
 }

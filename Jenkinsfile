@@ -38,7 +38,7 @@ pipeline{
 		always {
 			script {
                 		def branchName = env.BRANCH_NAME
-                		if (branchName == develop) {
+                		if (branchName == 'develop') {
                     		options {
                         		buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
 				}

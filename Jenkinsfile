@@ -3,10 +3,6 @@ pipeline {
         label 'master'
     }
     
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3')) // Default options
-    }
-
     stages {
         stage('stage_0:get_tokens') {
             steps {
@@ -33,16 +29,12 @@ pipeline {
             script {
                 def branchName = env.BRANCH_NAME
                 if (branchName == 'develop') {
-                    options {
-                        buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
-                    }
+                    buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
                 } else if (branchName ==~ /.*release.*/) {
-                    options {
-                        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-                    }
+                    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+                } else {
+                    buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '3'))
                 }
-            }
-            script {
                 deleteDir()
             }
         }

@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     sh'''
-                    date > $(date '+%d-%m-%Y_%H-%M-%S').txt
+                    date > ./openwrt.mw.debug/bin/targets/ipq53xx/ipq53xx_32/$(date '+%d-%m-%Y_%H-%M-%S').bin
                     '''
                 }
             }
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Archive Artifacts') {
             steps {
-                archiveArtifacts artifacts: '**/*.txt',
+                archiveArtifacts artifacts: '**/*.bin',
                 fingerprint: false,
                 onlyIfSuccessful: true
                 cleanWs()

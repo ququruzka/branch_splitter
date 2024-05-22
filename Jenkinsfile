@@ -14,6 +14,7 @@ pipeline {
             steps {
                 script {
                     sh'''
+                    mkdir -p ./openwrt.mw.debug/bin/targets/ipq53xx/ipq53xx_32/
                     date > openwrt.mw.debug/bin/targets/ipq53xx/ipq53xx_32/$(date '+%d-%m-%Y_%H-%M-%S').bin
                     '''
                 }
